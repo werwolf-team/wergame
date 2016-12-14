@@ -1,0 +1,541 @@
+
+body {
+	font-family: '黑体';
+	color:#121212;
+	line-height:110%;
+	position:absolute;
+}
+
+.header{
+	position:absolute;
+	height: 100px;
+	width:1000px;
+	text-align:center;
+	font-size:110%;
+}
+
+.userimage{
+	position:absolute;
+	background-color:#fcfcfc;
+	height: 80px;
+	width: 80px;
+	left:8px;
+	top: 8px;
+	text-align:center;
+	font-size:110%;
+	border:medium solid #121212;
+	border-radius: 8px 8px 8px 8px
+}
+
+
+.gamerImage{
+	position:absolute;
+	background-color:#fcfcfc;
+	height: 35px;
+	width: 35px;
+	top: 5px;
+	text-align:center;
+	font-size:110%;
+	border:medium solid #121212;
+	border-radius: 8px 8px 8px 8px
+}
+
+.gamerName{
+	position:absolute;
+	height: 38px;
+	width: 43px;
+	top: 45px;
+	text-align:center;
+	font-size:95%;
+	line-height: 90%;
+}
+
+
+.roomName{
+	position:absolute;
+	height: 30px;
+	width: 105px;
+	top: 10px;
+	left: 75px;
+	text-align:center;
+	font-size:95%;
+	line-height: 90%;
+}
+
+.userinfo{
+	font-family:'宋体';
+	position:absolute;
+	height: 100px;
+	width: 280px;
+	left:680px;
+	top: 20px;
+	text-align:center;
+	font-size:80%;
+	border:2px solid #121212;
+	border-radius: 8px 8px 8px 8px
+}
+
+
+.regBoard{
+	
+	position:absolute;
+	height: 60px;
+	width: 280px;
+	left:680px;
+	top: 40px;
+	text-align:center;
+	font-size:90%;
+	border:2px solid #121212;
+	border-radius: 8px 8px 8px 8px
+}
+
+
+.quickStart{
+	position:absolute;
+	background-color:#66ccff;
+	height: 56px;
+	width: 220px;
+	left:390px;
+	top:45px;
+	color:#fafafa;    
+	text-align:center;
+	font-size:160%;
+	cursor:pointer;
+	font-weight:bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 15px 15px 15px 15px
+}
+
+.friendRoom{
+	position:absolute;
+	background-color:#66ccff;
+	height: 56px;
+	width: 220px;
+	left:390px;
+	top:45px;
+	color:#fafafa;    
+	text-align:center;
+	font-size:160%;
+	cursor:pointer;
+	font-weight:bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 15px 15px 15px 15px
+}
+
+.gamerNameOnBoard{
+	position:absolute;
+	height: 350px;
+	width: 200px;
+	top: 145px;
+	color: #fafafa;    
+	text-align: center;
+	font-size: 115%;
+	line-height: 140%;
+	cursor: pointer;
+	font-weight: bold;
+	border:medium solid #121212;  
+	border-radius: 5px 5px 5px 5px
+}
+
+
+.gamingBoard{
+	position:absolute;
+	height: 260px;
+	width: 200px;
+	top: 95px;
+	color: #fafafa;    
+	text-align: center;
+	font-size: 115%;
+	line-height: 140%;
+	cursor: pointer;
+	font-weight: bold;
+	border:medium solid #121212;  
+	border-radius: 5px 5px 5px 5px
+}
+
+
+.gamingimage{
+	position:absolute;
+	background-color:#fcfcfc;
+	height: 150px;
+	width: 150px;
+	left: 20px;
+	top: 10px;
+	text-align:center;
+	font-size:110%;
+	border:medium solid #121212;
+	border-radius: 8px 8px 8px 8px
+}
+
+
+.createRoom{
+	position:absolute;
+	background-color:#66ccff;
+	height: 25px;
+	width: 100px;
+	left: 885px;
+	top: 145px;
+	color: #fafafa;    
+	text-align: center;
+	font-size: 115%;
+	line-height: 140%;
+	cursor: pointer;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px
+}
+
+
+.buttonsOnBoard{
+	font-family:'黑体';
+	position:absolute;
+	background-color:#66ccff;
+	height: 28px;
+	width: 75px;
+	top: 152px;
+	color:#fafafa;    
+	text-align:center;
+	font-size:100%;
+	line-height:160%;
+	cursor:pointer;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 10px 10px 0 0
+}
+
+.reg{
+	position:absolute;
+	background-color:#66ccff;
+	height: 25px;
+	width: 100px;
+	top: 20px;
+	color: #fafafa;    
+	text-align: center;
+	cursor: pointer;
+	font-size: 120%;
+	line-height: 140%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px
+}
+
+
+.login{
+	position:absolute;
+	background-color:#ffffff;
+	height: 150px;
+	width: 280px;
+	left: 360px;
+	top: 280px;
+	color: #000000;    
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2;
+}
+
+
+.register{
+	position:absolute;
+	background-color:#ffffff;
+	height: 280px;
+	width: 280px;
+	left: 360px;
+	top: 220px;
+	color: #333333;
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2;
+}
+
+
+.changeInformation{
+	position:absolute;
+	background-color:#ffffff;
+	height: 180px;
+	width: 280px;
+	left: 360px;
+	top: 220px;
+	color: #;    
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2;
+}
+
+
+.changePassword{
+	position:absolute;
+	background-color:#ffffff;
+	height: 180px;
+	width: 280px;
+	left: 360px;
+	top: 220px;
+	color: #;    
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2
+}
+
+.roomDiv{
+	position:absolute;
+	background-color:#ffffff;
+	height: 90px;
+	width: 200px;
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2
+}
+
+
+.createRoomDiv{
+	position:absolute;
+	background-color:#ffffff;
+	height: 220px;
+	width: 320px;
+	left: 340px;
+	top: 220px;
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2
+}
+
+
+.upLoadImage{
+	position:absolute;
+	background-color:#ffffff;
+	height: 280px;
+	width: 280px;
+	left: 360px;
+	top: 220px;
+	color: #;    
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px
+}
+
+
+.roomboard{
+	font-family:'宋体';
+	position:absolute;
+	height: 500px;
+	width: 90%;
+	left: 5%;
+	top: 180px;
+	text-align:center;
+	font-size:80%;
+	border:5px solid RGB(0, 0, 0);
+	border-radius: 8px 8px 8px 8px
+}
+
+
+.userlist{
+	position:absolute;
+	height: 250px;
+	width: 270px;
+	right: 10px;
+	top: 180px;
+	text-align:center;
+	font-size:120%;
+	overflow:scroll;
+	font-weight:bold;
+	line-height:160%;
+	border:5px solid RGB(0, 0, 0);
+	border-radius: 8px 8px 8px 8px
+}
+
+
+.chatBoard{
+	position:absolute;
+	background-color:#fafafa;
+	height: 190px;
+	width: 270px;
+	right: 10px;
+	top: 445px;
+	text-align:left;
+	font-size:100%;
+	overflow:scroll;
+	line-height:150%;
+	border:5px solid RGB(0, 0, 0);
+	border-radius: 8px 8px 8px 8px
+}
+
+.mapCanvas{
+	position:absolute;
+	left: 223px;
+	top: 70px;
+}
+
+
+
+.roomButton{
+	position:absolute;
+	background-color:#66ccff;
+	height: 30px;
+	width: 120px;
+	color: #fafafa;    
+	text-align: center;
+	font-size: 135%;
+	line-height: 140%;
+	cursor: pointer;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px
+}
+
+
+.QuitDiv{
+	position:absolute;
+	background-color:#ffffff;
+	height: 180px;
+	width: 280px;
+	left: 360px;
+	top: 200px;
+	color: #111111;    
+	text-align: center;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2;
+}
+
+
+.Timer{
+	position:absolute;
+	background-color: #999999;
+	height: 60px;
+	width: 180px;
+	top: 30px;
+	line-height: 140%;
+	text-align:center;
+	font-size: 250%;
+	border:medium solid #121212;
+	font-weight: bold;
+	border-radius: 30px 30px 30px 30px;
+	-moz-opacity:0.8;  
+    opacity: 0.8; 
+}
+
+
+.AvatarDiv{
+	position:absolute;
+	background-color:#ffffff;
+	height: 290px;
+	width: 310px;
+	left: 340px;
+	top: 220px;
+	color: #;    
+	text-align: right;
+	font-size: 100%;
+	line-height: 180%;
+	font-weight: bold;
+	-webkit-box-shadow: 1px 1px 1px 1px #000000;  
+	border-radius: 5px 5px 5px 5px;
+	z-index:2
+}
+
+.choose{
+	cursor:pointer;
+	border:2px solid RGB(0, 0, 0);
+	border-radius: 5px 5px 5px 5px;
+}
+
+
+.input{
+	position:absolute;
+	height: 165px;
+	left:5px;
+	bottom: 5px;
+	float:top;
+	color:#0;    
+	font-size:100%;
+}
+
+
+.inputboard{
+	font-family: '黑体';
+	position:absolute;
+	height: 180px;
+	width: 90%;
+	right:5%;
+	bottom: 30px;    
+	font-size:120%;
+}
+
+
+.cover{
+	display: none;
+	position:fixed;
+	background-color:#000000;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	z-index:1000;
+	filter:alpha(opacity=50);  
+    -moz-opacity:0.5;  
+    opacity: 0.5;  
+	z-index: 1;
+}
+
+.prompt{
+	position: absolute;
+	width:250px;
+	height:40px;
+	line-height:40px;
+	color:#ffffff;
+	text-align: center; 
+	font-size:120%;
+	transition: opacity 1.5s;
+	-moz-transition: opacity 1.5s; /* Firefox 4 */
+	-webkit-transition: opacity 1.5s; /* Safari 和 Chrome */
+}
+
+
+
+.line{
+	background-color:#999999;
+	height: 1px;
+	width: 310px;
+	position:relative;
+	left:4px;
+	filter:alpha(opacity=50);  
+    -moz-opacity:0.8;  
+    opacity: 0.8; 
+}
+
+
+
+. trans{
+	transition: background-color 0.5s;
+	-moz-transition: background-color 0.5s; /* Firefox 4 */
+	-webkit-transition: background-color 0.5s; /* Safari 和 Chrome */
+	-o-transition: background-color 0.5s; /* Opera */
+}

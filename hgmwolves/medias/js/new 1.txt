@@ -1,0 +1,31 @@
+<div id = 'head' class = 'header'>
+		<div class = 'title'>
+			<div style = 'position: absolute; left : 0px; height:120px '>
+				<img src = 'img/logo.png' style = 'position: absolute; left : 40px; height:120px '/>
+				<h3 style = 'position: absolute; left:50px; top: 75px;  width:180px'>五 子 棋 中 心</h3>
+			</div>
+			<div id = 'quickstart' class = 'quickstart'>
+				<h4 style = 'position:absolute; top:-20px; left:25px'>快速开始游戏</h4>
+			</div>
+		</div>
+	</div>
+	
+	<div id = 'body'>
+		<div id = 'userboard' class = 'userboard'>
+			<h2>当前用户</h2>
+			<div id = 'userinput' class = 'userinput'>
+			</div>
+		</div>
+		
+		<div id = 'inputboard' class = 'inputboard'>
+			<textarea id = 'input' name="chatInput" class = 'input'></textarea>
+			
+		</div>
+		
+		<div id = 'messageboard' class = 'messageboard'>
+		</div>
+		<div id = 'prompt' class = 'prompt'>
+			
+		</div>
+	</div>
+	

@@ -1,0 +1,190 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8" />
+	<title>HGM狼人杀中心</title>
+	<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="medias/css/default.css" />
+</head>
+
+<body style = 'background-color : #233333'>
+	<div id = 'gameboard' style = 'position: absolute; height:700px; width:1000px; background-image:url("medias/img/background.jpg")'>
+
+		<div id = 'head' class = 'header'>
+			<div class = 'title'>
+				<div style = 'position: absolute; left : 0px; height:120px '>
+					<img src = '/medias/img/logo.png' style = 'position: absolute; left : 35px; height:120px '/>
+					<h3 style = 'position: absolute; left:50px; top: 77px;  width:180px'> 狼 人 杀 中 心</h3>
+				</div>
+				
+				<div id = 'regBoard' class = 'regBoard'>
+					客官快点登录呀> <
+					<div id = 'logButton' class = 'reg' style = 'left: 30px'>
+						登录
+					</div>
+
+					<div id = 'regButton' class = 'reg' style = 'left: 150px'>
+						注册
+					</div>
+
+				</div>
+
+				<div id = 'userinfo' class = 'userinfo'>
+					<img id = 'userimage' title = '点击这里设置头像' class = 'userimage' style = "cursor:pointer"/>
+					<div id = 'username' style = 'position: absolute; left : 110px; top:15px'>
+						
+					</div>
+
+					<div id = 'showChangeInformation' style = 'position: absolute; left : 200px; top: 15px; width: 65px; height: 15px; color: #0000ff; cursor: pointer; text-decoration:underline'>修改资料</div>
+					<div id = 'showChangePassword' style = 'position: absolute; left: 200px; top: 40px; width: 65px; height: 15px; color: #0000ff; cursor: pointer; text-decoration:underline'>修改密码</div>
+					<div id = 'LogoutGo' style = 'position: absolute; left: 200px; top: 65px; width: 65px; height: 15px; color: #0000ff; cursor: pointer; text-decoration:underline'>退出登录</div>
+				</div>
+            
+			</div>
+		</div>
+
+
+		
+		<div id = 'createRoom' class = 'createRoom'  style = 'right: 5%'>
+			创建房间
+		</div>
+
+		<div id = 'normalRooms' class = 'buttonsOnBoard' style = 'left: 5%'>
+			普通场
+		</div>
+
+		<div id = 'roomboard' class = 'roomboard'>
+			
+		</div>
+			
+		</div>
+
+		<div id = 'register' class = 'register' style = 'display: none'>
+			<img id = 'closeRegister'src = 'medias/img/close.png' style = 'cursor: pointer; position: absolute; height:25px; right: -10px; top:-10px'/>
+			<img src = 'medias/img/logo.png' style = 'position: absolute; height:70px; left: 75px; top:-10px'/>
+			<div style = 'position: absolute; width: 90px ; height: 100px; left: 25px; top: 55px'>
+				邮箱：
+				<br> 用户名：
+				<br> 密码：
+				<br> 确认密码：
+				<br> 性别：
+				<br> 出生日期：
+				<br>
+			</div>
+			<img id = 'ValidName' src = '' style = 'position: absolute; height:14px; left: 240px; top:90px'/>
+			<img id = 'ValidPassword' src = '' style = 'position: absolute; height:14px; left: 240px; top:148px'/>
+			<form action = '/register/' method = 'get'>
+				<input id = 'rMail' name = 'rMail' type = 'text' style = 'position: absolute; width: 130px ; height: 15px; left: 100px; top: 60px'/>
+				<input id = 'rName' name = 'rName' type = 'text' style = 'position: absolute; width: 130px ; height: 15px; left: 100px; top: 88px'/>
+				<input id = 'rPassword' name = 'rPassword' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 100px; top: 116px'/>
+				<input id = 'rPasswordAgain' name = 'rPasswordAgain' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 100px; top: 144px'/>
+				<select id = 'rSex' name="rSex"  style = 'position: absolute; width: 134px ; height: 20px; left: 100px; top: 172px'>
+					<option value = 1>男</option>
+					<option value = 0>女</option>
+				</select>
+				<input id = 'rDate' name = 'rDate' type = 'date' style = 'position: absolute; width: 129px ; height: 15px; left: 100px; top: 200px'/>
+				<input id = 'registerGo' type = 'button' value = '确认注册' style = 'position: absolute; width: 80px ; height: 25px; left: 95px; bottom: 15px'>
+			</form>
+
+
+		</div>
+
+		<div id = 'login' class = 'login' style = 'display: none'>
+			<img id = 'closeLogin' src = '/medias/img/close.png' style = 'cursor: pointer; position: absolute; height:25px; right: -10px; top:-10px'/>
+			<img src = '/medias/img/logo.png' style = 'position: absolute; height:70px; left: 75px; top:-10px'/>
+			<div style = 'position: absolute; width: 70px ; height: 30px; left: 35px; top: 45px'>
+				用户名：
+				<br> 密码：
+			</div>
+
+			<form name = "loginForm" action = '/login/' method = 'get'>
+				<input id = 'lName' name = 'lName' type = 'text' style = 'position: absolute; width: 130px ; height: 15px; left: 95px; top: 50px'/>
+				<input id = 'lPassWord' name = 'lPassWord' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 95px; top: 80px'/>
+				<input id = 'loginGo' type = 'button' value = '确认登录' style = 'position: absolute; width: 80px ; height: 25px; left: 95px; top: 115px'>
+			</form>
+		</div>
+
+		<div id = 'changeInformation' class = 'changeInformation' style = 'display: none'>
+			<img id = 'closeChangeInf' src = '/medias/img/close.png' style = 'cursor: pointer; position: absolute; height:25px; right: -10px; top:-10px'/>
+			<img src = '/medias/img/logo.png' style = 'position: absolute; height:70px; left: 75px; top:-10px'/>
+			<div style = 'position: absolute; width: 90px ; height: 30px; left: 0px; top: 50px'>
+				邮箱：
+				<br> 性别：
+				<br> 出生日期：
+			</div>
+
+			<form name = "changeInformationForm" action = '/rewrite/'method = "get">
+				<input id = 'CImail' name = 'CIEMail' type = 'text' style = 'position: absolute; width: 130px ; height: 15px; left: 95px; top: 55px'/>
+				<select id = 'CISex' name="CISex"  style = 'position: absolute; width: 134px ; height: 20px; left: 95px; top: 85px'>
+					<option value = 1>男</option>
+					<option value = 0>女</option>
+				</select>
+				<input id = 'CIDate' name = "CIDate" type = 'date' style = 'position: absolute; width: 129px ; height: 15px; left: 95px; top: 115px'/>
+				<input id = 'changeInformationGo' type = 'button' value = '确认修改' style = 'position: absolute; width: 80px ; height: 25px; left: 95px; top: 150px'>
+			</form>
+		</div>
+
+
+		<div id = 'changePassword' class = 'changePassword' style = 'display: none'>
+			<img id = 'closeChangePassword' src = 'medias/img/close.png' style = 'cursor: pointer; position: absolute; height:25px; right: -10px; top:-10px'/>
+			<img src = '/medias/img/logo.png' style = 'position: absolute; height:70px; left: 75px; top:-10px'/>
+			<div style = 'position: absolute; width: 110px ; height: 30px; left: 0px; top: 50px'>
+				原密码：
+				<br>新密码：
+				<br>确认新密码：
+			</div>
+			<img id = 'ValidchangedPassword' src = '' style = 'position: absolute; height:14px; left: 240px; top:118px'/>
+
+			<form name = "changePasswordForm" action = '/rewritePassword/' method = "get">
+				<input id = 'CPOldPassword' name = 'CPOldPassword' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 100px; top: 55px'/>
+				<input id = 'CPNewPassword' name = 'CPNewPassword' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 100px; top: 85px'/>
+				<input id = 'CPNewPasswordAgain' name = 'CPNewPasswordAgain' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 100px; top: 115px'/>
+				<input id = 'changePasswordGo' type = 'button' value = '确认修改' style = 'position: absolute; width: 80px ; height: 25px; left: 95px; top: 150px'>
+			</form>
+		</div>
+		
+		<div id = 'createRoomDiv' class = 'createRoomDiv' style = 'display: none'>
+			<img id = 'closeCreateRoom' src = 'medias/img/close.png' style = 'cursor: pointer; position: absolute; height:25px; right: -10px; top:-10px'/>
+			<img src = '/medias/img/logo.png' style = 'position: absolute; height:70px; left: 95px; top:-10px'/>
+			<div style = 'position: absolute; width: 100px ; height: 30px; left: 35px; top: 45px'>
+				房间名：
+				<br>密码(选填)：
+				<br>重复密码：
+				<br>倒计时(s)：
+                <br>类型：
+				<br>
+			</div>
+				
+			<img id = 'ValidRoomPassword' src = '' style = 'position: absolute; height:14px; left: 260px; top:112px'/>
+			<img id = 'ValidRoomName' src = '' style = 'position: absolute; height:14px; left: 260px; top:50px'/>
+			<form name = "createRoomForm" action = '/login/' method = 'get'>
+				<input id = 'CRName' name = 'CRName' type = 'text' style = 'position: absolute; width: 130px ; height: 15px; left: 120px; top: 50px'/>
+				<input id = 'CRPassword' name = 'CRPassword' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 120px; top: 78px'/>
+				<input id = 'CRPasswordAgain' name = 'CRRepeatPasswordAgain' type = 'password' style = 'position: absolute; width: 130px ; height: 15px; left: 120px; top: 106px'/>
+				<input id = 'CRTimer' name = 'CRTimer' type = 'text' style = 'position: absolute; width: 130px ; height: 15px; left: 120px; top: 134px'/>
+                <select id = 'CRKill' name="CRKill"  style = 'position: absolute; width: 134px ; height: 20px; left: 120px; top: 160px'>
+					<option value = 0>屠城</option>
+					<option value = 1>屠边</option>
+				</select>
+				<input id = 'createRoomGo' type = 'button' value = '创建房间！' style = 'position: absolute; width: 80px ; height: 25px; left: 120px; bottom: 10px'>
+			</form>
+		</div>
+
+	<div id = 'AvatarDiv' class = 'AvatarDiv' style = 'display: none'>
+		<img id = 'closeAvatar' src = '/medias/img/close.png' style = 'cursor: pointer; position: absolute; height:25px; right: -10px; top:-10px'/>
+		<img src = '/medias/img/logo.png' style = 'position: absolute; left : 80px; top: -20px; height:80px '/>
+		<div style = 'position: absolute; left : 20px; top: 40px; height:80px ' >请从下面五个萌萌哒头像中选择一个~</div>
+		<img id = '1' class = 'choose' src = 'medias/img/avatar/1.jpg' style = 'position: absolute; left : 10px; top: 80px; height:80px; width:80px'/>
+		<img id = '2' class = 'choose' src = 'medias/img/avatar/2.jpg' style = 'position: absolute; left : 110px; top: 80px; height:80px; width:80px '/>
+		<img id = '3' class = 'choose' src = 'medias/img/avatar/3.jpg' style = 'position: absolute; left : 210px; top: 80px; height:80px; width:80px '/>
+		<img id = '4' class = 'choose' src = 'medias/img/avatar/4.jpg' style = 'position: absolute; left : 60px; top: 180px; height:80px; width:80px'/>
+		<img id = '5' class = 'choose' src = 'medias/img/avatar/5.jpg' style = 'position: absolute; left : 160px; top: 180px; height:80px; width:80px'/>
+	</div>	
+
+	</div>
+<script src = 'medias/js/hall.js' >
+</script>
+
+<div id = 'cover' class = 'cover' style = 'display:none '>
+</div>
+</body>

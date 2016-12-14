@@ -1,0 +1,91 @@
+<!doctype html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>HGM五子棋中心</title>
+	<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/medias/css/default.css" />
+</head>
+
+<body  style = 'background-color : #233333'>
+	<div id = 'gameboard' style = 'position: absolute; height:700px; width:1000px; background-image:url("/medias/img/background.jpg")'>
+	
+	<canvas id = 'mapCanvas' width = '555' height = '555' class = 'mapCanvas' style = 'background-image: url("/medias/img/map.jpg")'>
+	
+	</canvas>
+	
+	<div id = 'Gamer1Board' class = 'gamingBoard' style = 'left: 5px; cursor: default'>
+		<img id = 'gamer1Image' class = 'gamingimage' />
+		<div id = 'gamer1Name' style = 'position: absolute; width : 190px; top :170px; font-size: 200%'>
+		</div>
+		<div id = 'gamer1Grade' style = 'position: absolute; width : 190px; top :200px; font-size: 120%'>
+		</div>
+	</div>
+	
+	<div id = 'Gamer2Board' class = 'gamingBoard' style = 'right: 5px; cursor:default'>
+		<img id = 'gamer2Image' class = 'gamingimage' />
+		<div id = 'gamer2Name' style = 'position: absolute; width : 190px; top :170px; font-size: 200%'>
+		</div>
+		<div id = 'gamer2Grade' style = 'position: absolute; width : 190px; top :200px; font-size: 120%'>
+		</div>
+	</div>
+	
+	<img id = 'Blacker' src = '/medias/img/black.png' style = 'position: absolute; height: 30px; top: 320px; display: none'/>
+	<img id = 'Whiter' src = '/medias/img/white.png' style = 'position: absolute; height: 30px; top: 320px; display :none'/>
+	<div id = 'Quit' class = 'roomButton' style = 'top : 15px; left : 350px; width :260px; height:40px; font-size: 180%'>
+		退 出 房 间
+	</div>
+	
+	<div id = 'QuitDiv' class = 'QuitDiv' style = "display: none">
+		<img src = '/medias/img/logo.png' style = 'position: absolute;height:70px; left: 75px; top:-10px'/>
+		<div id = 'QuitHint' style =  'position: absolute; width : 270px; height: 100px; top:50px; text-align:'center''>
+			您确定要退出房间么？
+			<br>若您正在进行游戏，退出房间将导致判负！
+		</div>
+		<div id = "QuitYes" class = "roomButton" style = "width: 90px; height: 25px; bottom : 15px; left : 30px; font-size: 100%; ">
+			朕意已决
+		</div>
+			
+		<div id = "QuitNo" class = "roomButton" style = "width: 90px; height: 25px; bottom : 15px; right : 30px; font-size: 100%;">
+			从长计议
+		</div>
+	</div>
+	
+	<div id = "Ready1"  class = "roomButton" style = 'bottom : 280px; left : 15px; width :180px; height:40px; font-size: 200%'>
+		开 始
+	</div>
+	
+	<div id = 'Ready2' class = 'roomButton' style = 'bottom : 280px; right : 15px; width :180px; height:40px; font-size: 200%'>
+		准 备
+	</div>
+	
+	<div id = 'callDraw' class = 'roomButton' style = 'bottom : 25px; left : 230px'>
+		求 和
+	</div>
+	<div id = 'callLose' class = 'roomButton' style = 'bottom : 25px; left : 430px'>
+		认 输
+	</div>
+	<div id = 'callBack' class = 'roomButton' style = 'bottom : 25px; left : 630px'>
+		悔 棋
+	</div>
+	
+	<div id = 'Gun' class = 'roomButton' style = 'bottom : 45px; right: 40px'>
+		踢出房间！
+	</div>
+	
+	<div id = 'Timer' class = 'Timer' style = 'left: 15px'>
+		60:00
+	</div>
+	
+	<div id = 'cover' class = 'cover' style = 'display:none '>
+	</div>
+	
+	<div id = 'ChatBoard' class = 'chatBoard' style = 'width: 180px; height: 120px'>
+		</div>
+		<input type = 'text' id = 'Chat' placeholder="说点什么吧~" style = 'position:absolute; width: 140px; height : 20px; right :55px; bottom: 100px' />
+		<input type = 'button' id = 'ChatGo' value = '发送' style = 'position:absolute; width: 45px; height : 24px; right :8px; bottom: 100px' />
+<script src = '/medias/js/room.js' >
+</script>
+
+	
+</body>
