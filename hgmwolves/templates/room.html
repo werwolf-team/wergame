@@ -1,48 +1,116 @@
 <!doctype html>
-
 <head>
 	<meta charset="UTF-8" />
-	<title>HGM五子棋中心</title>
+	<title>HGM狼人杀中心</title>
 	<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="/medias/css/default.css" />
+	<link rel="stylesheet" type="text/css" href="css/room.css" />
 </head>
 
 <body  style = 'background-color : #233333'>
-	<div id = 'gameboard' style = 'position: absolute; height:700px; width:1000px; background-image:url("/medias/img/background.jpg")'>
-	
-	<canvas id = 'mapCanvas' width = '555' height = '555' class = 'mapCanvas' style = 'background-image: url("/medias/img/map.jpg")'>
-	
-	</canvas>
-	
-	<div id = 'Gamer1Board' class = 'gamingBoard' style = 'left: 5px; cursor: default'>
+	<div id = 'gameboard' style = "background-image:url('img/background.jpg')">
+	<div id = 'Gamer1' class = 'gamingBoard' style = 'left: 45px; top: 30px;'>
 		<img id = 'gamer1Image' class = 'gamingimage' />
-		<div id = 'gamer1Name' style = 'position: absolute; width : 190px; top :170px; font-size: 200%'>
-		</div>
-		<div id = 'gamer1Grade' style = 'position: absolute; width : 190px; top :200px; font-size: 120%'>
-		</div>
+		<div id = 'gamer1Name' class = "gamerName"></div>
+		<img id = 'gamer1die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer1police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer1Grade' class = "gamerGrade"></div>
 	</div>
-	
-	<div id = 'Gamer2Board' class = 'gamingBoard' style = 'right: 5px; cursor:default'>
+	<div id = "set">配置：狼人*4， 普通村民*4，预言家，女巫，猎人，丘比特</div>
+	<div id = 'Gamer2' class = 'gamingBoard' style = 'left: 195px; top: 30px;'>
 		<img id = 'gamer2Image' class = 'gamingimage' />
-		<div id = 'gamer2Name' style = 'position: absolute; width : 190px; top :170px; font-size: 200%'>
-		</div>
-		<div id = 'gamer2Grade' style = 'position: absolute; width : 190px; top :200px; font-size: 120%'>
-		</div>
+		<div id = 'gamer2Name' class = "gamerName"></div>
+		<img id = 'gamer2die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer2police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer2Grade' class = "gamerGrade"></div>
+	</div>
+	<div id = 'Gamer3' class = 'gamingBoard' style = 'left: 345px; top: 30px; cursor: default'>
+		<img id = 'gamer3Image' class = 'gamingimage' />
+		<div id = 'gamer3Name' class = "gamerName"></div>
+		<img id = 'gamer3die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer3police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer3Grade' class = "gamerGrade"></div>
 	</div>
 	
-	<img id = 'Blacker' src = '/medias/img/black.png' style = 'position: absolute; height: 30px; top: 320px; display: none'/>
-	<img id = 'Whiter' src = '/medias/img/white.png' style = 'position: absolute; height: 30px; top: 320px; display :none'/>
-	<div id = 'Quit' class = 'roomButton' style = 'top : 15px; left : 350px; width :260px; height:40px; font-size: 180%'>
-		退 出 房 间
+	<div id = 'Gamer4' class = 'gamingBoard' style = 'left: 495px; top: 30px;'>
+		<img id = 'gamer4Image' class = 'gamingimage' />
+		<div id = 'gamer4Name' class = "gamerName"></div>
+		<img id = 'gamer4die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer4police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer4Grade' class = "gamerGrade"></div>
 	</div>
+	
+	<div id = 'Gamer5' class = 'gamingBoard' style = 'left: 645px; top: 30px;'>
+		<img id = 'gamer5Image' class = 'gamingimage' />
+		<div id = 'gamer5Name' class = "gamerName"></div>
+		<img id = 'gamer5die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer5police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer5Grade' class = "gamerGrade"></div>
+	</div>
+	
+	<div id = 'Gamer6' class = 'gamingBoard' style = 'left: 795px; top: 30px;'>
+		<img id = 'gamer6Image' class = 'gamingimage' />
+		<div id = 'gamer6Name' class = "gamerName"></div>
+		<img id = 'gamer6die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer6police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer6Grade' class = "gamerGrade"></div>
+	</div>
+	
+	<div id = 'Gamer7' class = 'gamingBoard' style = 'left: 45px; bottom: 30px;'>
+		<img id = 'gamer7Image' class = 'gamingimage' />
+		<div id = 'gamer7Name' class = "gamerName"></div>
+		<img id = 'gamer7die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer7police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer7Grade' class = "gamerGrade"></div>
+	</div>
+	
+	<div id = 'Gamer8' class = 'gamingBoard' style = 'left: 195px; bottom: 30px;'>
+		<img id = 'gamer8Image' class = 'gamingimage' />
+		<div id = 'gamer8Name' class = "gamerName"></div>
+		<img id = 'gamer8die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer8police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer8Grade' class = "gamerGrade"></div>
+	</div>
+	
+	<div id = 'Gamer9' class = 'gamingBoard' style = 'left: 345px; bottom: 30px; '>
+		<img id = 'gamer9Image' class = 'gamingimage' />
+		<div id = 'gamer9Name' class = "gamerName"></div>
+		<img id = 'gamer9die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer9police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer9Grade' class = "gamerGrade"></div>
+	</div>
+	
+	<div id = 'Gamer10' class = 'gamingBoard' style = 'left: 495px; bottom: 30px;'>
+		<img id = 'gamer10Image' class = 'gamingimage' />
+		<div id = 'gamer10Name' class = "gamerName"></div>
+		<img id = 'gamer10die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer10police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer10Grade' class = "gamerGrade"></div>
+	</div>
+	
+	<div id = 'Gamer11' class = 'gamingBoard' style = 'left: 645px; bottom: 30px;'>
+		<img id = 'gamer11Image' class = 'gamingimage' />
+		<div id = 'gamer11Name' class = "gamerName"></div>
+		<img id = 'gamer11die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer11police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer11Grade' class = "gamerGrade"></div>
+	</div>
+	
+	<div id = 'Gamer12' class = 'gamingBoard' style = 'left: 795px; bottom: 30px;'>
+		<img id = 'gamer12Image' class = 'gamingimage' />
+		<div id = 'gamer12Name' class = "gamerName"></div>
+		<img id = 'gamer12die' class = 'dieimage' src = 'img/x.png'/>
+		<img id = 'gamer12police' class = 'policeimage' src = 'img/police.jpg'/>
+		<div id = 'gamer12Grade' class = "gamerGrade"></div>
+	</div>
+
 	
 	<div id = 'QuitDiv' class = 'QuitDiv' style = "display: none">
-		<img src = '/medias/img/logo.png' style = 'position: absolute;height:70px; left: 75px; top:-10px'/>
+		<img src = 'img/logo.png' style = 'position: absolute;height:70px; left: 75px; top:-10px'/>
 		<div id = 'QuitHint' style =  'position: absolute; width : 270px; height: 100px; top:50px; text-align:'center''>
 			您确定要退出房间么？
 			<br>若您正在进行游戏，退出房间将导致判负！
 		</div>
-		<div id = "QuitYes" class = "roomButton" style = "width: 90px; height: 25px; bottom : 15px; left : 30px; font-size: 100%; ">
+		<div id = "QuitYes" class = "roomButton" style = "width: 90px; height: 25px; bottom : 15px; left : 30px; font-size: 100%;">
 			朕意已决
 		</div>
 			
@@ -51,40 +119,40 @@
 		</div>
 	</div>
 	
-	<div id = "Ready1"  class = "roomButton" style = 'bottom : 280px; left : 15px; width :180px; height:40px; font-size: 200%'>
-		开 始
-	</div>
-	
-	<div id = 'Ready2' class = 'roomButton' style = 'bottom : 280px; right : 15px; width :180px; height:40px; font-size: 200%'>
+	<div id = 'Ready' class = 'roomButton' style = 'bottom : 300px;'>
 		准 备
 	</div>
 	
-	<div id = 'callDraw' class = 'roomButton' style = 'bottom : 25px; left : 230px'>
-		求 和
-	</div>
-	<div id = 'callLose' class = 'roomButton' style = 'bottom : 25px; left : 430px'>
-		认 输
-	</div>
-	<div id = 'callBack' class = 'roomButton' style = 'bottom : 25px; left : 630px'>
-		悔 棋
+	<div id = 'Quit' class = 'roomButton' style = 'bottom : 385px; '>
+		退 出 房 间
 	</div>
 	
-	<div id = 'Gun' class = 'roomButton' style = 'bottom : 45px; right: 40px'>
-		踢出房间！
-	</div>
 	
-	<div id = 'Timer' class = 'Timer' style = 'left: 15px'>
+	
+	<div id = 'Timer'>
 		60:00
 	</div>
+	
+	<div id = "Now">
+		欢迎来到本房间！
+	</div>
+	<textarea id = "lastword" cols = 40 rows = 5>请在这里写下你的遗言，当你死时会被大家看到</textarea>
 	
 	<div id = 'cover' class = 'cover' style = 'display:none '>
 	</div>
 	
-	<div id = 'ChatBoard' class = 'chatBoard' style = 'width: 180px; height: 120px'>
+	<div id = "left_right">
+		请警长大人选择发言顺序~
+		<div id = "left">左边</div>
+		<div id = "right">右边</div>
+	</div>
+	
+	<div id = 'ChatBoard' class = 'chatBoard'>
 		</div>
-		<input type = 'text' id = 'Chat' placeholder="说点什么吧~" style = 'position:absolute; width: 140px; height : 20px; right :55px; bottom: 100px' />
-		<input type = 'button' id = 'ChatGo' value = '发送' style = 'position:absolute; width: 45px; height : 24px; right :8px; bottom: 100px' />
-<script src = '/medias/js/room.js' >
+		<img id = 'sound' src = "img/sound.png"/>
+		<input type = 'text' id = 'Chat' placeholder="说点什么吧~"/>
+		<input type = 'button' id = 'ChatGo' value = '发 送' />
+<script src = 'js/room.js' >
 </script>
 
 	

@@ -1,285 +1,19 @@
-var mapCanvas = document.getElementById('mapCanvas');
-var gameboard = document.getElementById('gameboard');
-var readyButton1 = document.getElementById('Ready1');
-var QuitDiv = document.getElementById('QuitDiv');
-var cover = document.getElementById('cover');
-var readyButton2 = document.getElementById('Ready2');
-var gamer1Name = document.getElementById('gamer1Name');
-var gamer2Name = document.getElementById('gamer2Name');
-var gamer1Grade = document.getElementById('gamer1Grade');
-var gamer2Grade = document.getElementById('gamer2Grade');
-var gamer1Image = document.getElementById('gamer1Image');
-var gamer2Image = document.getElementById('gamer2Image');
-var TimerDiv = document.getElementById('Timer');
-var ChatBoard = document.getElementById('ChatBoard');
-ChatBoard.innerHTML = '';
-var Gun = document.getElementById('Gun');
-var nowGameID;
-var white = new Image();
-var black = new Image();
-var rowHeight = 36;
-var timeSet = 600;
-var Timer;
-var gaming = false;
+var timeSet = 1000;
+var gaming = 0;
 var roomName;
-var myName;
-var mySeat;
-var myColor = false;
-var myTurn = true;
-var TimerOn = false;
-var TimerValue;
-var getTime;
-var chat = true;
-var TimeCount = -1;
-var player1 = new Object(), player2 = new Object();
-player1.ready = player2.ready = false;
-player1.score = player2.score = -1;
-player1.avatar = player2.avatar = 0;
-TimerDiv.style.display = 'none';
-
-var map = new Array;          //记录地图
-for (var i = 0; i < 15; i++){
-	map[i] = new Array;
-	for(var j = 0; j < 15; j++){
-		map[i][j] = 0;
-	}
-}
-
-white.src = '/medias/img/white.png';
-black.src = '/medias/img/black.png';
-var mouseX, mouseY;
-
-function mouseMove(ev) { 
-	Ev= ev || window.event; 
-	var mousePos = mouseCoords(Ev); 
-	mouseX = mousePos.x - 223 - 57;
-	mouseY = mousePos.y - 70 - 68;
-} 
-
-
-function setTimer(){
-	if(gaming == false){
-		TimerDiv.style.display = 'none';
-	}
-	else{
-		TimerDiv.style.display = 'block';		
-		TimeCount = getTime;
-		if((myTurn && mySeat == 0) || (!myTurn && mySeat == 1)){
-			TimerDiv.style.left = '15px';
-		}
-		else if((myTurn && mySeat == 1) || (!myTurn && mySeat == 0)){
-			TimerDiv.style.left = '795px';
-		}
-		else{
-			TimerDiv.style.display = 'none';
-		}
-		if(TimeCount == 0 && myTurn){
-			alert('超时！您本局为负！');
-			gaming = false;
-		}
-		if(!gaming || isNaN(TimeCount)|| TimeCount < 0){
-			TimerDiv.style.display = 'none';
-		}
-		else{
-			TimerDiv.style.display = 'block';
-			TimerDiv.innerHTML = Math.floor(TimeCount / 60).toString() +':'+ Math.floor((TimeCount % 60)).toString();  
-		}	
-	}
-}
-
-
-function newGame(){
-	for(var i = 0; i < 15; i++){
-		for(var j = 0; j < 15; j++){
-			map[i][j] = 0;
-		}
-	}
-}
-
-function getMap(){
-	$.getJSON("/GetMap/",{'rName': roomName},function(ret){
-		if(ret['str'] == '0'){
-			var x, y, gamer;
-			x = parseInt(ret['x']);
-			y = parseInt(ret['y']);
-			gamer = ret['gamer'];
-			getTime = TimerValue - ret['timer']; 
-			for(var i = 0; i < 15; i++){
-				for(var j = 0; j < 15; j++){
-					map[i][j] = ret['map'][i][j];
-				}
-			}	
-			if(ret['Winner'] == 1){
-				drawMap();
-				alert('本局结束！' + player1.name + '获胜！');
-				gaming = false;
-			}
-			else if(ret['Winner'] == 2){
-				drawMap();
-				alert('本局结束！' + player2.name + '获胜！');
-				gaming = false;
-			}
-			else if(ret['Winner'] == 3){
-				drawMap();
-				alert('本局结束！' + '和棋！');
-				gaming = false;
-			}
-			if(myTurn != (gamer == mySeat + 1)){
-				TimeCount = TimerValue;
-				myTurn = (gamer == mySeat + 1);
-			}
-			if(ret['back'] != 0){
-				if(ret['back'] == 1002 - mySeat){
-					alert('悔棋被拒绝');
-					$.getJSON("/ReBack/",{'rName': roomName},function(ret){
-							
-					})
-				}
-				else if(ret['back'] == 1001 + mySeat){
-					//alert('您残忍拒绝了他');
-				}
-				else if(ret['back'] != mySeat + 1){
-					var accept = confirm('大人，对方想悔棋，可否？取消即为拒绝。');
-					var str;
-					if(accept){
-						if(2 - myTurn == 1){
-							str = '1';
-						}
-						else{
-							str = '2';
-						}
-						$.getJSON("/Regret/",{'rName': roomName, 'step': str},function(ret){
-							
-						})
-					}
-					else{
-						if(mySeat == 0){
-							str = '0';
-						}
-						else{
-							str = '1';
-						}
-						$.getJSON("/Noback/",{'rName': roomName, 'seat' : str}, function(ret){
-							
-						})
-					}
-				}
-				else{
-					alert('您已怂逼，等待对方同意');
-				}
-			}
-			if(ret['draw'] != 0){
-				if(ret['draw'] == 1001 + mySeat){
-					alert('求和被拒绝');
-					$.getJSON("/ReDraw/",{'rName': roomName},function(ret){
-							
-					})
-				}
-				else if(ret['draw'] == 1002 - mySeat){
-					//alert('您残忍拒绝了他');
-				}
-				else if(ret['draw'] != mySeat + 1){
-					var accept = confirm('大人，对方想求和，可否？取消即为拒绝。');
-					var str;
-					if(accept){
-						$.getJSON("/Draw/",{'rName': roomName},function(ret){
-							
-						})
-					}
-					else{
-						if(mySeat == 0){
-							str = '0';
-						}
-						else{
-							str = '1';
-						}
-						$.getJSON("/NoDraw/",{'rName': roomName, 'seat' : str}, function(ret){
-							
-						})
-					}
-				}
-				else{
-					alert('您已求和，等待对方同意');
-				}
-			}
-			
-		}
-	})
-}
-
-function drawMap(){
-	context = mapCanvas.getContext('2d');
-	clearMap();
-	for(var i = 0; i < 15; i++){
-		for(var j = 0; j < 15; j++){
-			if(map[i][j] == 1){
-				context.drawImage(black, rowHeight * i + 10,rowHeight * j + 13);
-			}
-			else if(map[i][j] == 2){
-				context.drawImage(white, rowHeight * i + 8,rowHeight * j + 11);
-			}
-		}
-	}
-}
-
-function clearMap(){
-	var ctx = mapCanvas.getContext('2d');
-	ctx.clearRect(0, 0, 555, 555);
-}
-
-mapCanvas.onclick = function(e){
-	if(myTurn){
-		var x, y, row, col;
-		x = e.offsetX - 20;
-		y = e.offsetY - 25;
-		//alert(x +'|' + x % rowHeight + '|' + y + '|'+ y % rowHeight);
-		if(x % rowHeight < 15){
-			row = Math.floor(x / rowHeight);
-		}
-		else if(x % rowHeight > 22){
-			row = Math.floor(x / rowHeight) + 1;
-		}
-		else{
-			row = -1;
-		}
-		if(y % rowHeight < 15) {
-			col = Math.floor(y / rowHeight);
-		}
-		else if(y % rowHeight > 22){
-			col = Math.floor(y / rowHeight) + 1;
-		}
-		else{
-			col = -1;
-		}
-		if(map[row][col] == 0){
-			$.getJSON("/MoveChess/",{'rName': roomName, 'row': row, 'col': col, 'Gamer': mySeat + 1},function(ret){
-				if(ret['winner'] == 1){
-					getMap();
-				}
-				else if(ret['winner'] == 2){
-					getMap();
-				}
-			})
-		}
-	}
-}
-
-function checkKick(){
-	$.getJSON("/CheckKick/",{'rName': roomName}, function(ret){
-		if(ret['str'] == 'Yes!'){
-			alert('你被房主踢出了房间！');
-			window.location.href = getBack();
-			$.getJSON("/ReKick/",{'rName': roomName}, function(ret){
-			})
-		}
-    })
-}
-
-
+var nowType = 0;
+var myIdentity;
+var deadList = new Array();
+var newdead = -1;
+var now = 0;
+var myId = -1;
+var impolice = 0;
+var myName = ""; 
+var deadflag = true;
+var lr = document.getElementById("left_right");
+var cover = document.getElementById("cover");
 gameboard.style.left = (window.innerWidth /2 - 500).toString() + 'px';
 gameboard.style.top = (window.innerHeight /2 - 350).toString() + 'px';
-
-
 
 
 window.onresize = function(){
@@ -287,190 +21,446 @@ window.onresize = function(){
 	gameboard.style.top = (window.innerHeight /2 - 350).toString() + 'px';
 }
 
-roomName = getRoomName();
-getMyName();
-getPlayer();
-setReady();
+
+getRoomName();
+getmyName();
 window.setInterval(MainLoop, timeSet);      //轮询
 
 
 function MainLoop(){
-	getPlayer();
-	setReady();
-	if(chat){
-		getChat();
-	}
-	if(mySeat == 1){
-		checkKick();
-	}
-	if (gaming){
-		getMap();
-		drawMap();
-		setWhite();
+	if(gaming != 1){
+		getReadyStatus();
 	}
 	else{
-		getGame();
-	}
-	setTimer();
-}
-
-function setWhite(){
-	var blacker = document.getElementById('Blacker');
-	var whiter = document.getElementById('Whiter');
-	if(myColor == true){
-		blacker.style.left = '870px';
-		whiter.style.left = '90px';
-	}
-	else{
-		blacker.style.left = '90px';
-		whiter.style.left = '870px';
+		if(now == 1){
+			getMyIden();
+		}
+		getGameStatus();
+		getMessage();
+		now++;
 	}
 }
 
-
-function getGame(){
-	$.getJSON("/GetGame/", {'rName': roomName},function(ret){
-        if(ret['str'] == 'GameStart'){
-			gaming = true;
-			newGame();
-			clearMap();
-			nowGameID = ret['GID'];
-			if(mySeat == 0){
-				if(ret['GBlack'] == 'false'){
-					myColor = false;
-					myTurn = true;
+function getGameStatus(){
+	$.getJSON("/getGameStatus/",{}, function(ret){
+		if(ret['nowStatus'] != nowType){
+			setState(n);
+			nowType = ret['nowStatus'];
+		}
+		else{
+			
+		}
+		setTimer(ret['timer']);
+		impolice = ret['impolice'];
+		for(var i = 1; i <= 12; i++){
+			if(ret['res'][i - 1]['livestatus'] != 1)
+			{
+				die(i);
+				if(myId == i && deadflag == true)
+				{
+					sendLastWord();
+					deadflag = false;
 				}
-				else{
-					myColor = true;
-					myTurn = false;
+				if ($.inArray(i, deadlist) == -1)
+				{
+					nowdead = i;
+					deadList.push(i);
 				}
 			}
-			else{
-				if(ret['GBlack'] == 'false'){
-					myColor = true;
-					myTurn = false;
+			else
+				redie(i);
+			if(ret['res'][i - 1]['policestatus'] == 1)
+				police(i);
+			else
+				repolice(i);
+		}
+	})
+}
+
+
+function sendLastWord(){
+	$.getJSON("/sendLastWord/",{'myName': myName, 'content': $("#lastword").val()}, function(ret){
+        if(ret['str']){
+			
+		}
+	})
+}
+
+function getMyIden(){
+	$.getJSON("/getRole/",{'myName': myName}, function(ret){
+		var temp;
+        if(ret['str']){
+			myIdentity = ret['str'];
+		}
+		if(myIdentity == 1)
+			temp = "预言家";
+		else if(myIdentity == 2)
+			temp = "女巫";
+		else if(myIdentity == 3)
+			temp = "丘比特";
+		else if(myIdentity == 4)
+			temp = "猎人";
+		else if(myIdentity == 5)
+			temp = "狼人";
+		else if(myIdentity == 6)
+			temp = "普通村民";
+		var myDate = new Date();
+		var mytime=myDate.toLocaleTimeString().substring(2);
+		addMsg('系统提醒',mytime, "你的身份是" + temp);
+	})
+}
+
+
+function getmyName(){
+	$.getJSON("/getMyName/",{}, function(ret){
+        if(ret['str']){
+			myName = ret['str'];
+		}
+	})
+}
+
+
+function setTimer(time){
+	var timerDiv = document.getElementById("Timer");
+	timerDiv.innerHTML = (Math.floor(time / 60))+ ":" + time % 60;
+}
+
+
+function getReadyStatus(){
+	var count = 0;
+	$.getJSON("/getReadyStatus/",{'myRoom': roomName}, function(ret){
+        if(ret['result']){
+			for(var i = 1; i <= 12; i++){
+				if(ret['result'][i-1]["status"] == 1)
+				{
+					ready(i);
+					count++;
 				}
-				else{
-					myColor = false;
-					myTurn = true;
-				}
+				var tempdiv = document.getElementById("gamer" + n + "Name");
+				tempdiv.innerHTML = ret['result'][i-1]['name'];
+			}
+			if(count == 12)
+			{
+				gaming = 1;
 			}
 		}
 	})
 }
 
 
-Gun.onclick = function(){
-	$.getJSON("/Kick/",{'rName': roomName}, function(ret){
-		if(ret['str'] == 'Fail!'){
-			alert('Something happened');
-		}
-    })
-}
-
-
 function getRoomName(){     //从URL解析房间名
 	var str = window.location.search;
-	return str.substring(10, str.length);
+	var arr = str.split('='); 
+	return arr[1];
 }
 
 
-function getPlayer(){
-	$.getJSON("/getPlayer/",{'RName': roomName}, function(ret){
-			chat = !ret['Chat'];
-            if(ret['str'] == 'Fail!'){
-				//alert('Something happened');
+function getMessage(){
+	$.getJSON("/getMessage/",{}, function(ret){
+		if(ret['result']){
+			for(var i = 0; i < ret['List'].length; i++){
+				var tmptext = document.createElement('span');
+				var tmp = ChatBoard.lastChild;
+				if (tmp != null){
+					var id = tmp.id;
+				}
+				tmptext.setAttribute('id', ret['result'][i][0]);
+				tmptext.innerHTML = '&nbsp;'+ ret['result'][i][0].toString().substring(11,19) + '&nbsp;&nbsp;&nbsp;<b>' +　ret['List'][i][1] + ':</b><br> ' + ret['List'][i][2] +　'<br>';
+				if(ChatBoard.innerHTML == '' || (tmp != null && ret['List'][i][0].toString() > id)){
+					ChatBoard.appendChild(tmptext);
+					ChatBoard.scrollTop = ChatBoard.scrollHeight;
+				}
+			}	
+		}
+	})
+}
+
+
+function addMsg(name, time, content){
+	var ChatBoard = document.getElementById("ChatBoard");
+	var tmptext = document.createElement('span');
+	var tmp = ChatBoard.lastChild;
+	if (tmp != null){
+		var id = tmp.id;
+	}
+	tmptext.setAttribute('id', time);
+	tmptext.innerHTML = '&nbsp;'+ time + '&nbsp;&nbsp;&nbsp;<b>' +　name + ':</b><br> ' + content +　'<br>';
+	ChatBoard.appendChild(tmptext);
+	ChatBoard.scrollTop = ChatBoard.scrollHeight;
+}
+
+function setState(n){
+	if(n == 1){
+		turnOff();
+		$("#Now").html("请丘比特选择情侣中的第1位");
+	}
+	else if(n == 2){
+		$("#Now").html("请丘比特选择情侣中的第2位");
+	}
+	else if(n == 3){
+		turnOff();
+		$("#Now").html("请狼人选择要杀的玩家");
+	}
+	else if(n == 4)
+	{
+		$("Now").html("请预言家选择要验的人");
+	}
+	else if(n == 5){
+		var myDate = new Date();
+		var mytime=myDate.toLocaleTimeString().substring(2);
+		if (myIdentity == 2)
+			addMsg('系统提醒',mytime, newdead + "号玩家死了");
+		$("#Now").html("请女巫选择要救的玩家");
+	}
+	else if(n == 6){
+		$("#Now").html("请女巫选择要杀的玩家");
+	}
+	else if(n == 7){
+		turnOn();
+		$("#Now").html("想竞选警长的玩家点击自己的头像");
+	}
+	else if(n == 8){
+		$("#Now").html("请警长候选人轮流发言");
+	}
+	else if(n == 9){
+		$("#Now").html("请未参加竞选的玩家选择投票对象，也可不选");
+	}
+	else if(n == 10){
+		turnOn();
+		$("#Now").html("请警长选择左右发言");
+		if(impolice){
+			lr.style.display = "block";
+			cover.style.display = "block";
+		}
+	}
+	else if(n == 11){
+		$("#Now").html("请玩家依次发言");
+	}
+	else if(n == 12){
+		$("#Now").html("请选择你要投死的人");
+	}
+}
+
+function turnOff(){
+	gameboard.style.backgroundImage="url(img/backgroundnight.jpg)";
+}
+
+function turnOn(){
+	gameboard.style.backgroundImage="url(img/background.jpg)";
+}
+
+function ready(n){
+	var diediv = document.getElementById("gamer" + n + "Grade");
+	diediv.innerHTML = "已准备";
+	
+}
+
+function unready(n){
+	var diediv = document.getElementById("gamer" + n + "Grade");
+	diediv.innerHTML = "已准备";
+	
+}
+
+function die(n){
+	var diediv = document.getElementById("gamer" + n + "die");
+	if(diediv.style.display != "block")
+		diediv.style.display = "block";
+	
+}
+
+function redie(n){
+	var diediv = document.getElementById("gamer" + n + "die");
+	if(diediv.style.display != "none")
+		diediv.style.display = "none";
+	
+}
+
+function police(n){
+	var diediv = document.getElementById("gamer" + n + "police");
+	if(diediv.style.display != "block")
+			diediv.style.display = "block";
+	
+}
+
+function repolice(n){
+	var diediv = document.getElementById("gamer" + n + "police");
+	if(diediv.style.display != "none")
+		diediv.style.display = "none";
+	
+}
+
+
+function clear(){
+	
+}
+
+function choose(n){
+	if(nowType == 1){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+				alert('选人成功');
 			}
 			else{
-				player1.name = ret['P1'][0];
-				player1.ready = ret['P1'][1];
-				player1.avatar = ret['P1'][2];
-				player1.score = ret['P1'][3];
-				player2.name = ret['P2'][0];
-				player2.ready = ret['P2'][1];
-				player2.avatar = ret['P2'][2];
-				player2.score = ret['P2'][3];
-				TimerValue = parseInt(ret['Timer']);
-				gamer1Name.innerHTML = player1.name;
-				gamer2Name.innerHTML = player2.name;
-				if(player1.avatar >= 1 && player1.avatar <= 5){
-					gamer1Image.src = '/medias/img/avatar/' + player1.avatar.toString() + '.jpg';
-				}
-				if(player2.avatar >= 1 && player2.avatar <= 5){
-					gamer2Image.src = '/medias/img/avatar/' + player2.avatar.toString() + '.jpg';
-				}
-				gamer1Grade.innerHTML = '积分：' + player1.score.toString();
-				if(player2.name != '')
-					gamer2Grade.innerHTML = '积分：' + player2.score.toString();
-				if(myName == player1.name){
-					mySeat = 0;
-					Gun.style.display = 'block';
-				}
-				else if(myName == player2.name){
-					mySeat = 1;
-					Gun.style.display = 'none';
+				alert('选人失败');
+			}
+		})
+	}
+	else if(nowType == 2){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+				alert('选人成功');
+			}
+			else{
+				alert('选人失败');
+			}
+		})
+	}
+	else if(nowType == 3){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+				alert('选人成功');
+			}
+			else{
+				alert('选人失败');
+			}
+		})
+	}
+	else if(nowType == 4){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+				
+				/*if(ret['res'] == '1'){
+					addMsg('系统提醒',mytime, '你验证的' + n + "号玩家是好人");
 				}
 				else{
-					mySeat = -1;
-					Gun.style.display = 'none';
-				}
+					addMsg('系统提醒',mytime, '你验证的' + n + "号玩家是坏人");
+				}*/
 			}
-          })
+			else{
+				alert('选人失败');
+			}
+		})
+	}
+	else if(nowType == 5 && n == nowdead){
+		$.getJSON("/setvote/",{'myName': myName, 'id': 1, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+					var myDate = new Date();
+					var mytime=myDate.toLocaleTimeString().substring(2);
+					addMsg('系统提醒',mytime, '你对死者使用了解药');
+				}
+			else{
+				alert('操作失败');
+			}
+		})
+	}
+	else if(nowType == 6){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+					var myDate = new Date();
+					var mytime=myDate.toLocaleTimeString().substring(2);
+					addMsg('系统提醒',mytime, '你对' + n + "号玩家使用了毒药");
+				}
+			else{
+				alert('操作失败');
+			}
+		})
+	}
+	else if(nowType == 7){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+					alert('参选成功');
+				}
+			else{
+				alert('参选失败');
+			}
+		})
+	}
+	else if(nowType == 8){
+		alert("现在请不要乱点");			
+				
+	}
+	else if(nowType == 9){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+					
+				}
+			else{
+				alert('操作失败');
+			}
+		})
+	}
+	else if(nowType == 10 || nowType == 11){
+		alert("现在请不要乱点");			
+				
+	}
+	else if(nowType == 12){
+		$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+	        if(ret['str'] == '1'){
+					alert('投票成功')
+				}
+			else{
+				alert('投票失败');
+			}
+		})
+	}
+	
 }
 
 
-function setReady(){
-	if(player1.ready && player2.ready){
-		readyButton2.style.backgroundColor = '#999999';
-		readyButton1.style.backgroundColor = '#999999';
-		readyButton1.style.cursor = 'default';
-	}
-	else if(mySeat == 0){
-		readyButton2.onclick = function(){return};
-		readyButton2.style.cursor = 'default';
-		
-		if(player2.ready == true && player1.ready == false){
-			readyButton2.style.backgroundColor = '#999999';
-			readyButton1.style.backgroundColor = '#66ccff';
-			readyButton1.style.cursor = 'pointer';
-			readyButton1.onclick = ReadyOrStart;
+
+$('.gamingBoard').click(function(){
+	if(true)
+	{
+		var n = this.getAttribute("id").substring(5);
+		if (window.confirm("你确认选择"+ n + "号玩家么？")) {
+			choose(n);
+		} else {
+			
 		}
-		
-		else if(player2.ready == false && player1.ready == false){
-			readyButton2.style.backgroundColor = '#66ccff';
-			readyButton1.style.backgroundColor = '#999999';
-			readyButton1.style.cursor = 'default';
-			readyButton1.onclick = function(){return};
-		}
-	}
-	else if(mySeat == 1){
-		readyButton1.onclick = function(){return};
-		readyButton1.style.cursor = 'default';
-		
-		if(player2.ready == true && player1.ready == false){
-			readyButton2.style.backgroundColor = '#999999';
-			readyButton2.style.cursor = 'default';
-			readyButton2.onclick = function(){return};;
-		}
-		
-		else if(player2.ready == false && player1.ready == false){
-			readyButton2.style.backgroundColor = '#66ccff';
-			readyButton2.style.cursor = 'pointer';
-			readyButton1.style.backgroundColor = '#66ccff';
-			readyButton2.onclick = ReadyOrStart;
-		}
-	}
-}
+	}	
+})
+
+
 
 $('#Quit').click(function(){
 	QuitDiv.style.display = 'block';
 	cover.style.display = 'block';
 })
 
+
+
+$("#Ready").click(function(){
+	$.getJSON("/ready/",{'myRoom': roomName}, function(ret){
+        if(ret['result'] == '1'){
+			$("#Ready").css("background-color","#555555");
+		}
+		else{
+			alert('准备失败');
+		}
+	})
+})
+
+$("#ChatGo").click(function(){
+	$.getJSON("/ready/",{'content': $("#Chat").val()}, function(ret){
+        if(ret['result'] == '1'){
+			getMessage();
+		}
+		else{
+			alert('此时您不能说话！');
+		}
+	})
+})
+
+
+
+
+
 $('#QuitNo').click(function(){
 	QuitDiv.style.display = 'none';
 	cover.style.display = 'none';
 })
+
+
 
 $('#QuitYes').click(function(){
 	if(mySeat == -1){
@@ -487,106 +477,29 @@ $('#QuitYes').click(function(){
 	})
 })
 
-$('#callLose').click(function(){
-	$.getJSON("/Lose/",{'rName': roomName, 'Gamer': mySeat + 1}, function(ret){
-	})
-})
-
-
-$('#callBack').click(function(){
-	$.getJSON("/CanRegret/",{'rName': roomName, 'Gamer': mySeat + 1, 'step': 1 + myTurn}, function(ret){
-		if(ret['str'] == 'Cannot regret!'){
-			alert('您刚同意了对方的悔棋且没有落子，悔无可悔！');
+$('#left').click(function(){
+	$.getJSON("/setvote/",{'myName': myName, 'id': n, 'myRoom': roomName}, function(ret){
+        if(ret['str'] == '0'){
+			window.location.href = getBack();
+		}
+		else{
+			//alert('Something happened');
+			window.location.href = getBack();
 		}
 	})
 })
 
-$('#callDraw').click(function(){
-	$.getJSON("/CanDraw/",{'rName': roomName, 'Gamer': mySeat + 1}, function(ret){
-		
-	})
+
+$('#lastword').click(function(){
+	this.innerHTML = "";
 })
 
-function getChat(){
-	$.getJSON('/GetMessageList/',{'rName': roomName},function(ret){
-		if(ret['List']){
-			for(var i = 0; i < ret['List'].length; i++){
-				var tmptext = document.createElement('span');
-				var tmp = ChatBoard.lastChild;
-				if (tmp != null){
-					var id = tmp.id;
-				}
-				tmptext.setAttribute('id', ret['List'][i][0]);
-				tmptext.innerHTML = '&nbsp;'+ ret['List'][i][0].toString().substring(11,19) + '&nbsp;&nbsp;&nbsp;<b>' +　ret['List'][i][1] + ':</b><br> ' + ret['List'][i][2] +　'<br>';
-				if(ChatBoard.innerHTML == '' || (tmp != null && ret['List'][i][0].toString() > id)){
-					ChatBoard.appendChild(tmptext);
-					ChatBoard.scrollTop = ChatBoard.scrollHeight;
-				}
-			}	
-		}
-    })
-}
 
-
-$('#ChatGo').click(function(){
-	if(!chat){
-		alert('这里禁聊！');
-		return;
+$("#lastword").blur(function(){
+	if(this.innerHTML == "")
+	{
+		this.innerHTML = "请在这里写下你的遗言，当你死时会被大家看到";
 	}
-	var Chat = document.getElementById('Chat');
-	var content = $('#Chat').val();
-	$.getJSON('/AddMessage/',{'rName': roomName, 'rUserName':myName, 'rText': content}, function(ret){
-		
-		Chat.value = '';   
-    })
-})
-
-
-
-function getBack(){
-	var str = window.location.href;
-	var append = window.location.search;
-	return str.substring(0, str.length - append.length - 6);
-}
-
-function getMyName(){
-	$.getJSON("/getMyName/", function(ret){
-        myName = ret['name'];
-	})
-}
-
-
-function ReadyOrStart(){
-	var blacker = document.getElementById('Blacker');
-	var whiter = document.getElementById('Whiter');
-	
-	$.getJSON("/getReady/", {'rName': roomName, 'rPlayerName': myName}, function(ret){
-		if(ret['str'] == 'GameStart'){
-			alert('开始游戏！');
-			blacker.style.display = 'block';
-			whiter.style.display = 'block';
-			nowGameID = ret['GID'];
-			var blacker = document.getElementById('Blacker');
-			var whiter = document.getElementById('Whiter');
-			if(mySeat == 0){
-				if(ret['GBlack'] == 'false'){
-					myColor = false;
-				}
-				else{
-					myColor = true;
-				}
-			}
-			else{
-				if(ret['GBlack'] == 'false'){
-					myColor = true;
-				}
-				else{
-					myColor = false;
-				}
-			}
-		}
-		TimeCount = TimerValue;
-	})	
-}
+});
 
 
