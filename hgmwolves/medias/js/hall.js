@@ -594,7 +594,8 @@ function getRoomList(){
 					alert('密码错误!');
 				}
 				else{
-					$.getJSON("/EnterRoom/",{'rName': name}, function(ret){
+                    alert(name);
+					$.getJSON("/enterRoom/",{'rName': name}, function(ret){
 						if(ret['str'] == '0'){
 							alert('根本没有这样的房间。是假的，是特技。');
 						}
@@ -613,7 +614,7 @@ function getRoomList(){
 				}
 			}
 			else{
-				$.getJSON("/EnterRoom/",{'rName': name}, function(ret){
+				$.getJSON("/enterRoom/",{'rName': name}, function(ret){
 						if(ret['str'] == '0'){
 							alert('根本没有这样的房间。是假的，是特技。');
 						}

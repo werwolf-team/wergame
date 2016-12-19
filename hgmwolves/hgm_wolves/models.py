@@ -14,6 +14,8 @@ class User(models.Model):
     UReady = models.BooleanField()
     URole = models.PositiveIntegerField()
     UAlive = models.BooleanField()
+    ULover = models.BooleanField()
+    UVote = models.PositiveIntegerField()
 
 class Room(models.Model):
     RName = models.CharField(max_length = 20)
@@ -23,14 +25,22 @@ class Room(models.Model):
     #RPlayer1 = models.PositiveIntegerField()
     RTimer = models.PositiveIntegerField()
     #RP1Ready = models.BooleanField()
+    RNow = models.PositiveIntegerField()
     RGaming = models.BooleanField()
     RGamer = models.PositiveIntegerField()
     RDays = models.PositiveIntegerField()
     RPolice = models.PositiveIntegerField()
-    RConfig = models.PositiveIntegerField()
+    RPoison = models.BooleanField()
+    RSave = models.BooleanField()
+    RSpeak = models.PositiveIntegerField()
+    RDead = models.PositiveIntegerField()
+    RWords = models.PositiveIntegerField()
+    RVote = models.PositiveIntegerField()
+    RLast = models.PositiveIntegerField()
 
 class Message(models.Model):
      MRoom = models.CharField(max_length = 40)
+     MRight = models.PositiveIntegerField()
      MUser = models.CharField(max_length = 40)
      MType = models.PositiveIntegerField()
      MText = models.CharField(max_length = 200)

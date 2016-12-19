@@ -6,7 +6,7 @@ def register(request):
     try:
         p = User.objects.get(UName = request.GET['rName'])
     except User.DoesNotExist:
-        tmp = User(UName = request.GET['rName'], UPassword = request.GET['rPassword'], USex = request.GET['rSex'],UEmail = request.GET['rMail'], UOnline = False, UDate = request.GET['rDate'], UAvatar = 0, URoom = "", UOrder = 0, URole = 0, UAlive = True, UReady = False)
+        tmp = User(UName = request.GET['rName'], UPassword = request.GET['rPassword'], USex = request.GET['rSex'],UEmail = request.GET['rMail'], UOnline = False, UDate = request.GET['rDate'], UAvatar = 0, URoom = "", UOrder = 0, URole = 0, UAlive = True, UReady = False, ULover = False, UVote = 0)
         tmp.save()
         feed_back = {'str' : 'Success!'}
         return JsonResponse(feed_back)
@@ -128,15 +128,22 @@ def createRoom(request):
         temp.RType = request.GET['CRKill']
         temp.RTimer = 0
         temp.RGamer = 1
+        temp.RNow = 0
         temp.RGaming = False
         temp.RDays = 0
         temp.RPolice = 0
-        temp.RConfig = 0
+        temp.RPoison = False
+        temp.RSave = False
+        temp.RSpeak = 0
+        temp.RDead = 0
+        temp.RWords = 0
+        temp.RVote = 0
+        temp.RLast = 0
         temp.save()
         p = User.objects.get(UName = temp.RCreator)
-        p.URoom = temp.RName;
-        p.UOrder = 1;
-        p.save();
+        p.URoom = temp.RName
+        p.UOrder = 1
+        p.save()
         name_dict = {'str': 'Success!'}
         return JsonResponse(name_dict)
     else:
@@ -153,22 +160,21 @@ def enterRoom(request):
         username =  request.COOKIES.get('username', '')
         temp = User.objects.get(UName = username)
         flag = False
-        for i in range(1, 12):
+        for i in range(1, 13):
             try:
                 tmp = User.objects.get(URoom = p.RName, UOrder = i)
             except User.DoesNotExist:
-                flag = True;
-                temp.UOrder = i;
-                temp.URoom = p.RName;
-                temp.save();
-                break;
+                flag = True
+                temp.UOrder = i
+                temp.URoom = p.RName
+                temp.save()
+                break
         if flag == False:
             name_dict = {'str': '-1'}
             return JsonResponse(name_dict)
         else:
             name_dict = {'str': '1'}
             return JsonResponse(name_dict)
-
 
 def getRoomList(request):
     p = Room.objects.all()
@@ -177,7 +183,7 @@ def getRoomList(request):
     for room in p:
         if room.RGaming == False:
             count = 0
-            for i in range(1, 12):
+            for i in range(1, 13):
                 try:
                     tmp = User.objects.get(URoom = room.RName, UOrder = i)
                 except User.DoesNotExist:

@@ -42,16 +42,15 @@ function MainLoop(){
 }
 
 function getGameStatus(){
-	$.getJSON("/getGameStatus/",{}, function(ret){
+	$.getJSON("/getGameStatus/",{'myName': myName}, function(ret){
 		if(ret['nowStatus'] != nowType){
-			setState(n);
+			setState(ret['nowStatus']);
 			nowType = ret['nowStatus'];
 		}
 		else{
 			
 		}
-		setTimer(ret['timer']);
-		impolice = ret['impolice'];
+		setTimer(ret['nowTime']);
 		for(var i = 1; i <= 12; i++){
 			if(ret['res'][i - 1]['livestatus'] != 1)
 			{
@@ -114,7 +113,7 @@ function getMyIden(){
 function getmyName(){
 	$.getJSON("/getMyName/",{}, function(ret){
         if(ret['str']){
-			myName = ret['str'];
+			myName = ret['name'];
 		}
 	})
 }
@@ -128,16 +127,20 @@ function setTimer(time){
 
 function getReadyStatus(){
 	var count = 0;
-	$.getJSON("/getReadyStatus/",{'myRoom': roomName}, function(ret){
-        if(ret['result']){
+	$.getJSON("/getReadyStatus/",{'rName': roomName}, function(ret){
+        if(ret['str']){
 			for(var i = 1; i <= 12; i++){
-				if(ret['result'][i-1]["status"] == 1)
+				if(ret['str'][i-1] && ret['str'][i-1]["status"] == 1)
 				{
 					ready(i);
 					count++;
 				}
-				var tempdiv = document.getElementById("gamer" + n + "Name");
-				tempdiv.innerHTML = ret['result'][i-1]['name'];
+				var tempdiv = document.getElementById("gamer" + i + "Name");
+                if(ret['str'][i-1]) {
+                    tempdiv.innerHTML = ret['str'][i - 1]['name'];
+                    tempdiv = document.getElementById("gamer" + i + "Image");
+                    tempdiv.src = '/medias/img/avatar/' +  ret['str'][i - 1]['avatar'] + '.jpg';
+                }
 			}
 			if(count == 12)
 			{
@@ -150,23 +153,23 @@ function getReadyStatus(){
 
 function getRoomName(){     //从URL解析房间名
 	var str = window.location.search;
-	var arr = str.split('='); 
-	return arr[1];
+	var arr = str.split('=');
+	roomName= arr[1];
 }
 
 
 function getMessage(){
-	$.getJSON("/getMessage/",{}, function(ret){
-		if(ret['result']){
-			for(var i = 0; i < ret['List'].length; i++){
+	$.getJSON("/getMessage/",{'myName': myName}, function(ret){
+		if(ret['Messages']){
+			for(var i = 0; i < ret['Messages'].length; i++){
 				var tmptext = document.createElement('span');
 				var tmp = ChatBoard.lastChild;
 				if (tmp != null){
 					var id = tmp.id;
 				}
-				tmptext.setAttribute('id', ret['result'][i][0]);
-				tmptext.innerHTML = '&nbsp;'+ ret['result'][i][0].toString().substring(11,19) + '&nbsp;&nbsp;&nbsp;<b>' +　ret['List'][i][1] + ':</b><br> ' + ret['List'][i][2] +　'<br>';
-				if(ChatBoard.innerHTML == '' || (tmp != null && ret['List'][i][0].toString() > id)){
+				tmptext.setAttribute('id', ret['Messages'][i]['time']);
+				tmptext.innerHTML = '&nbsp;'+ ret['Messages'][i]['time'].toString().substring(11,19) + '&nbsp;&nbsp;&nbsp;<b>' + ret['Messages'][i]['user'] + ':</b><br> ' + ret['Messages'][i]['content'] +'<br>';
+				if(ChatBoard.innerHTML == '' || (tmp != null && ret['Messages'][i]['time'].toString() > id)){
 					ChatBoard.appendChild(tmptext);
 					ChatBoard.scrollTop = ChatBoard.scrollHeight;
 				}
@@ -184,7 +187,7 @@ function addMsg(name, time, content){
 		var id = tmp.id;
 	}
 	tmptext.setAttribute('id', time);
-	tmptext.innerHTML = '&nbsp;'+ time + '&nbsp;&nbsp;&nbsp;<b>' +　name + ':</b><br> ' + content +　'<br>';
+	tmptext.innerHTML = '&nbsp;'+ time + '&nbsp;&nbsp;&nbsp;<b>' +name + ':</b><br> ' + content +'<br>';
 	ChatBoard.appendChild(tmptext);
 	ChatBoard.scrollTop = ChatBoard.scrollHeight;
 }
@@ -430,8 +433,8 @@ $('#Quit').click(function(){
 
 
 $("#Ready").click(function(){
-	$.getJSON("/ready/",{'myRoom': roomName}, function(ret){
-        if(ret['result'] == '1'){
+	$.getJSON("/ready/",{'rName': roomName}, function(ret){
+        if(ret['str'] == '1'){
 			$("#Ready").css("background-color","#555555");
 		}
 		else{
@@ -441,7 +444,7 @@ $("#Ready").click(function(){
 })
 
 $("#ChatGo").click(function(){
-	$.getJSON("/ready/",{'content': $("#Chat").val()}, function(ret){
+	$.getJSON("/receiveMessage/",{'content': $("#Chat").val(), 'myName': myName}, function(ret){
         if(ret['result'] == '1'){
 			getMessage();
 		}
